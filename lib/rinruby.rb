@@ -300,7 +300,10 @@ class RinRuby
         echo_eligible = false
       end
       break if found_eval_flag && ( found_stderr_flag == @echo_stderr )
-      return false if line == RinRuby_Exit_Flag
+      if line == RinRuby_Exit_Flag
+        Signal.trap('INT', old_handler)
+        return false
+      end
       if echo_enabled && echo_eligible
         @echo_writer.puts(line)
         @echo_writer.flush
