@@ -269,7 +269,7 @@ class RinRuby
     else
       raise ParseError, "Parse error on eval:#{string}"
     end
-    Signal.trap('INT') do
+    old_handler = Signal.trap('INT') do
       @writer.print ''
       @reader.gets
       Signal.trap('INT') do
@@ -306,8 +306,7 @@ class RinRuby
         @echo_writer.flush
       end
     end
-    Signal.trap('INT') do
-    end
+    Signal.trap('INT', old_handler)
     true
   end
 
